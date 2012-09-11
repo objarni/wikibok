@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -- coding: utf-8 --
 #
 # Copyright (C) 2009 Google Inc.
 #
@@ -98,9 +99,9 @@ class SettingsUtil(object):
         scopes = scopes.split(',')
 
     if auth_type == CLIENT_LOGIN:
-      email = self.get_param('email', 'Please enter your username',
+      email = self.get_param('email', 'Google user',
                              reuse=False)
-      password = self.get_param('password', 'Password', True, reuse=False)
+      password = self.get_param('password', 'Google pass', True, reuse=False)
       if service is None:
         service = self.get_param(
             'service', 'What is the name of the service you wish to access?'
