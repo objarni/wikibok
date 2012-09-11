@@ -10,7 +10,7 @@ Förutsättningar
 Installation
 ---------
 * Installera Python 2.7 (http://python.org/download) _Obs! Stödjer ej Python 3!_
-* Ladda ned wikibok.zip
+* Ladda ned wikibok.zip (klicka Downloads-länken uppe till höger)
 * Packa up wikibok.zip
 
 Manual
