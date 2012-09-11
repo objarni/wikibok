@@ -11,15 +11,16 @@ Installation
 ---------
 * Installera Python 2.7 (http://python.org/download) _Obs! Stödjer ej Python 3!_
 * Ladda ned wikibok.zip (klicka Downloads-länken uppe till höger)
-* Packa up wikibok.zip
+* Packa upp wikibok.zip
 
 Manual
 ------
 * Starta en terminal
 * Ställ dig i wikibok-katalogen
-* Skriv
+* Vid prompten, skriv:
 
   __python wikibok.py__
 
 * Följ instruktionerna som ges
+* Voilà, en ny bok har skapats på motargumentwiki!
 
