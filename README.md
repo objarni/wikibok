@@ -24,3 +24,9 @@ Manual
 * Följ instruktionerna som ges
 * Voilà, en ny bok har skapats på motargumentwiki!
 
+Screenshot
+----------
+
+Vilket projekt får liv utan ett screenshot? Svar: inget!
+
+![wikibok.py](http://i.snag.gy/sij7r.jpg)
