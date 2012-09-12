@@ -1,22 +1,7 @@
 #!/usr/bin/python
 # -- coding: utf-8 --
-#
-# Copyright 2009 Google Inc. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
-
-__author__ = 'e.bidelman (Eric Bidelman)'
+__author__ = 'objarni (Olof Bjarnason)'
 
 import getopt
 import mimetypes
@@ -31,10 +16,8 @@ import gdata.sites.data
 SOURCE_APP_NAME = 'wikibok'
 
 MAIN_MENU = [u'1) Lista böcker',
-             u'2) Lista senaste ändringar',
-             u'3) Skapa ny bok',
-             u'4) Ta bort bok',
-             u'5) Avsluta']
+             u'2) Skapa ny bok',
+             u'3) Avsluta']
 
 SETTINGS_MENU = ['1) Change current site.',
                  '2) Change domain.']
@@ -123,6 +106,21 @@ class SitesExample(object):
     print
     return choice
 
+  def default_html(self, content='', imgurl=''):
+    return '''
+<font size="4">
+[[[CONTENT]]]
+</font>
+<div>
+<font size="4">
+<span>&nbsp; &nbsp; 
+Just på denna punkt borde alla de, som i dag hylla Hitler
+ och hans män såsom hederliga och ansvarskännande politici,
+  ha anledning till en smula begrundan. Den svenska 
+  socialdemokratin kunde vid det sista valet peka på att
+   majoriteten av väljarna röstat till vänster</span><br>
+</div>'''
+
   def PrintEntry(self, entry):
     print '%s [%s]' % (entry.title.text, entry.Kind())
     if entry.page_name:
@@ -169,41 +167,26 @@ class SitesExample(object):
           print 'kommer i framtiden'
 
         if choice == 2:
-          print u"\nKollar vad som hänt på det senaste...\n"
 
-          feed = self.client.GetActivityFeed()
-          for entry in feed.entry[0:10]:
-            print '  %s [%s on %s]' % (entry.title.text, entry.Kind(),
-                                       entry.updated.text)
-
-        if choice == 3:
-          #print "\nFetching content feed of '%s'...\n" % self.client.site
-
-          feed = self.client.GetContentFeed()
-          #try:
-          #  selection = self.GetChoiceSelection(
-          #      feed, 'Select a parent to upload to (or hit ENTER for none): ')
-          #except ValueError:
-          #  selection = None
+          uri = '%s?kind=%s' % (self.client.MakeContentFeedUri(), 'webpage')
+          feed = self.client.GetContentFeed(uri=uri)
+          #feed = self.client.GetContentFeed()
 
           bokrot = (page for page in feed.entry if page.title.text == "Bokrot").next()
 
           page_title = raw_input('Ange bokens namn: ')
+          number_of_pages = int(raw_input('Ange antal sidbilder: '))
 
-          parent = bokrot
-          #if selection is not None:
-          #  parent = feed.entry[selection - 1]
+          index_entry = self.client.CreatePage('webpage', page_title, 'lite html', parent=bokrot)
+          if index_entry.GetAlternateLink():
+            print 'Indexsida skapad. URL: %s' % index_entry.GetAlternateLink().href
 
-          new_entry = self.client.CreatePage(
-              'webpage', page_title, 'lite html',
-              parent=parent)
-          if new_entry.GetAlternateLink():
-            print 'Skapad. URL: %s' % new_entry.GetAlternateLink().href
-
-        if choice == 4:
-          print 'ta bort bok ej implementerat\n'
-
-        if choice == 5:
+          for sida in range(number_of_pages):
+            namn = 'Sida ' + str(sida + 1)
+            ny_sida = self.client.CreatePage('webpage', namn, self.default_html(), parent = index_entry)
+            print namn + ' skapad.'
+            
+        if choice == 3:
           print 'Ha det!\n'
           return
 
